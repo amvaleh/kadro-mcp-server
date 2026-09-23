@@ -1,0 +1,26 @@
+{
+  "name": "kadro-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server letting AI assistants book a Kadro photographer on a user's behalf and hand back a payment link. Wraps the Kadro Api::Agent::V1 REST API.",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc && node dist/server.js",
+    "register": "tsc && node dist/register.js"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.1",
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
+  }
+}
