@@ -26,6 +26,7 @@ export function registerKadroTools(server: McpServer) {
         "each with a numeric shoot_type_id. Call this first if you don't already know the id for the kind " +
         "of shoot the user wants.",
       inputSchema: {},
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
     async () => {
       try {
@@ -48,6 +49,7 @@ export function registerKadroTools(server: McpServer) {
         shoot_type_id: z.number().int().describe("A shoot_type_id from search_shoot_types."),
         city_id: z.number().int().optional().describe("Optional Kadro city id to narrow the search."),
       },
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
     async ({ shoot_type_id, city_id }) => {
       try {
@@ -70,6 +72,7 @@ export function registerKadroTools(server: McpServer) {
         photographer_uid: z.string().describe("A photographer uid from search_photographers."),
         shoot_type_id: z.number().int(),
       },
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
     async ({ photographer_uid, shoot_type_id }) => {
       try {
@@ -107,6 +110,11 @@ export function registerKadroTools(server: McpServer) {
           .optional()
           .describe("A key you generate to make retries safe. Reuse it only when retrying the exact same request."),
       },
+      // Not readOnly (creates a Project + guest User) and not destructive (no
+      // money moves, nothing existing is altered or deleted). idempotentHint
+      // is false by default: it's only idempotent when idempotency_key is
+      // reused, which callers may not do.
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
     async (params) => {
       try {
@@ -129,6 +137,7 @@ export function registerKadroTools(server: McpServer) {
       inputSchema: {
         slug: z.string().describe("The slug returned by create_reservation."),
       },
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
     async ({ slug }) => {
       try {
@@ -152,6 +161,7 @@ export function registerKadroTools(server: McpServer) {
       inputSchema: {
         slug: z.string().describe("The slug returned by create_reservation."),
       },
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
     },
     async ({ slug }) => {
       try {
