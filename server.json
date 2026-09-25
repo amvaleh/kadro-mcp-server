@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.amvaleh/kadro-mcp-server",
+  "description": "Search and book real photographers on Kadro (Iran) on a user's behalf, ending with a payment link.",
+  "repository": {
+    "url": "https://github.com/amvaleh/kadro-mcp-server",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://www.kadro.co",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://www.kadro.co/mcp"
+    }
+  ]
+}
