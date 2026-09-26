@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { registerKadroTools } from "./tools.js";
@@ -13,6 +14,22 @@ function buildServer(): McpServer {
 }
 
 const app = express();
+
+// This is a public MCP server meant to be called by any AI platform's
+// connector infrastructure, not a fixed set of web origins — without this,
+// a CORS-enforcing client's preflight OPTIONS request gets no
+// Access-Control-Allow-Origin header, silently fails, and the real POST
+// never happens. That's indistinguishable from the server being down to
+// whoever's calling it (confirmed: this is exactly what broke ChatGPT's and
+// Claude's connectors — OPTIONS was returning 200 with zero CORS headers).
+app.use(
+  cors({
+    origin: true,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "Mcp-Protocol-Version", "Mcp-Session-Id"],
+    exposedHeaders: ["Mcp-Session-Id"],
+  })
+);
 app.use(express.json());
 
 // Stateless mode: a fresh server+transport per request. Simple and correct
