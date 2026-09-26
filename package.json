@@ -1,6 +1,6 @@
 {
   "name": "kadro-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server letting AI assistants book a Kadro photographer on a user's behalf and hand back a payment link. Wraps the Kadro Api::Agent::V1 REST API.",
   "type": "module",
   "main": "dist/server.js",

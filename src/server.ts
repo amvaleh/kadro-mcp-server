@@ -8,7 +8,7 @@ import { registerKadroTools } from "./tools.js";
 const PORT = Number(process.env.PORT ?? 3100);
 
 function buildServer(): McpServer {
-  const server = new McpServer({ name: "kadro-booking", version: "1.0.0" });
+  const server = new McpServer({ name: "kadro-booking", version: "1.0.1" });
   registerKadroTools(server);
   return server;
 }

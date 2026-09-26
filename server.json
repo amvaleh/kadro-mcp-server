@@ -6,12 +6,12 @@
     "url": "https://github.com/amvaleh/kadro-mcp-server",
     "source": "github"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "websiteUrl": "https://www.kadro.co",
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://www.kadro.co/mcp"
+      "url": "https://www.shootempire.com/kadro-mcp-relay/mcp"
     }
   ]
 }
