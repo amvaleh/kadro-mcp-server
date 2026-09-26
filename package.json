@@ -10,7 +10,7 @@
     "dev": "tsc && node dist/server.js",
     "register": "tsc && node dist/register.js"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.1",
