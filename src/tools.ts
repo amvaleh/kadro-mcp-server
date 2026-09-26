@@ -42,9 +42,10 @@ export function registerKadroTools(server: McpServer) {
     {
       title: "Search Kadro photographers",
       description:
-        "Find real, bookable photographers for a given shoot_type_id (from search_shoot_types), " +
-        "optionally narrowed to a city_id. Returns each photographer's uid (needed for every later call), " +
-        "display name, rating, review count, and city.",
+        "Find real, bookable photographers for a given shoot_type_id (from search_shoot_types). city_id is " +
+        "optional — if the user hasn't said where, just omit it and search across all cities. Returns each " +
+        "photographer's uid (needed for every later call), display name, rating, review count, city, and a " +
+        "profile_url — share that link with the user so they can see the photographer's portfolio themselves.",
       inputSchema: {
         shoot_type_id: z.number().int().describe("A shoot_type_id from search_shoot_types."),
         city_id: z.number().int().optional().describe("Optional Kadro city id to narrow the search."),
@@ -65,8 +66,10 @@ export function registerKadroTools(server: McpServer) {
     {
       title: "Get a photographer's packages and prices",
       description:
-        "List the real, currently bookable packages (with prices, in Toman) a specific photographer offers " +
-        "for a given shoot_type_id. Rejects the shoot_type_id if that photographer doesn't actually offer it. " +
+        "List the real, currently bookable packages a specific photographer offers for a given shoot_type_id. " +
+        "'price' (Toman) is the actual final price for THIS photographer — already adjusted for their grade " +
+        "and city, matching what their profile page shows. 'base_price' is the unadjusted list price; don't " +
+        "quote base_price to a user. Rejects the shoot_type_id if that photographer doesn't actually offer it. " +
         "Use the returned package id with create_reservation.",
       inputSchema: {
         photographer_uid: z.string().describe("A photographer uid from search_photographers."),
@@ -88,21 +91,27 @@ export function registerKadroTools(server: McpServer) {
     {
       title: "Create a guest photographer reservation",
       description:
-        "Book a specific photographer for a specific package, date/time, and address on the user's behalf — " +
-        "no login required. This only places a 15-minute hold; it does NOT charge any money and does NOT " +
-        "require or accept any payment information. Immediately follow this with get_payment_link and give " +
-        "that URL to the human — they open it themselves to verify their phone number and pay. " +
-        "start_time must be an ISO 8601 timestamp at least 6 hours in the future. Pass a stable idempotency_key " +
-        "if you might retry this call, so a retry can't create a second reservation.",
+        "Book a specific photographer for a specific package on the user's behalf — no login required. This " +
+        "only places a 15-minute hold; it does NOT charge any money and does NOT require or accept any payment " +
+        "information. Immediately follow this with get_payment_link and give that URL to the human — they open " +
+        "it themselves to verify their phone number and pay. " +
+        "start_time and the address fields are all OPTIONAL — if the user doesn't know the date yet, omit " +
+        "start_time entirely (don't guess one); if they don't know the exact shoot address yet, omit all three " +
+        "address_* fields (the reservation falls back to the city itself). Only pass start_time if given: it " +
+        "must be an ISO 8601 timestamp at least 6 hours in the future, or the call fails. Pass a stable " +
+        "idempotency_key if you might retry this call, so a retry can't create a second reservation.",
       inputSchema: {
         shoot_type_id: z.number().int(),
         package_id: z.number().int(),
         city_id: z.number().int(),
         photographer_uid: z.string(),
-        start_time: z.string().describe("ISO 8601 timestamp, at least 6 hours from now."),
-        address_latitude: z.number(),
-        address_longitude: z.number(),
-        address_detail: z.string().describe("Human-readable address text for the shoot location."),
+        start_time: z
+          .string()
+          .optional()
+          .describe("ISO 8601 timestamp, at least 6 hours from now. Omit entirely if the user doesn't know the date yet — do not guess."),
+        address_latitude: z.number().optional().describe("Omit along with address_longitude/address_detail if the shoot address isn't known yet."),
+        address_longitude: z.number().optional(),
+        address_detail: z.string().optional().describe("Human-readable address text for the shoot location."),
         shoot_detail: z.string().optional().describe("Free-text notes about the shoot for the photographer."),
         guest_display_name: z.string().optional().describe("The customer's name, if known."),
         idempotency_key: z

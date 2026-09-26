@@ -55,12 +55,14 @@ export interface PhotographerSummary {
   review_count: number;
   grade: string | null;
   city: string | null;
+  profile_url: string;
 }
 
 export interface Package {
   id: number;
   title: string;
-  price: string;
+  price: number;
+  base_price: string;
   duration: string;
   digitals: number;
   is_full: boolean;
@@ -72,10 +74,10 @@ export interface ReservationCreateParams {
   package_id: number;
   city_id: number;
   photographer_uid: string;
-  start_time: string;
-  address_latitude: number;
-  address_longitude: number;
-  address_detail: string;
+  start_time?: string;
+  address_latitude?: number;
+  address_longitude?: number;
+  address_detail?: string;
   shoot_detail?: string;
   guest_display_name?: string;
   idempotency_key?: string;
