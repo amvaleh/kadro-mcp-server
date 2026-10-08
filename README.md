@@ -1,6 +1,6 @@
 # kadro-mcp-server
 
-[![M8ven Score](https://m8ven.ai/badge/mcp/amvaleh/kadro-mcp-server)](https://m8ven.ai/mcp/amvaleh/kadro-mcp-server)
+[![M8ven Score](https://m8ven.ai/badge/mcp/amvaleh-kadro-mcp-server-1am3w1?v=230648338c7935be556afcb03f957c17)](https://m8ven.ai/mcp/amvaleh-kadro-mcp-server-1am3w1?s=readme)
 
 An MCP (Model Context Protocol) server that lets AI assistants search Kadro
 photographers/packages and book a guest reservation on a user's behalf,
